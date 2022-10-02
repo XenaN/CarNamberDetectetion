@@ -1,9 +1,9 @@
 stages:
 
   create_annotations:
-    cmd: python scripts/create_annotations.py autoriaNumberplateDataset-2022-08-01/ custom-dataset/
+    cmd: python scripts/cli.py ann --input autoriaNumberplateDataset-2022-08-01 --output custom-dataset
     deps:
-      - scripts/create_annotations.py
+      - scripts/cli.py
       - autoriaNumberplateDataset-2022-08-01/
     outs:
       - custom-dataset/images/train/
@@ -12,9 +12,9 @@ stages:
       - custom-dataset/labels/val/
 
   create_test_dataset:
-    cmd: python scripts/create_test_dataset.py custom-dataset/
+    cmd: python scripts/cli.py dataset --input custom-dataset
     deps:
-      - scripts/create_test_dataset.py
+      - scripts/cli.py
       - custom-dataset/images/train/
       - custom-dataset/images/val/
       - custom-dataset/labels/train/
@@ -24,20 +24,21 @@ stages:
       - custom-dataset/labels/test/
 
   create_list_files:
-    cmd: python scripts/create_list_files.py custom-dataset/
+    cmd: python scripts/cli.py lists --input custom-dataset
     deps:
-      - scripts/create_list_files.py
+      - scripts/cli.py
       - custom-dataset/images/test/
-    outs: 
+    outs:
       - custom-dataset/train.txt
       - custom-dataset/val.txt
       - custom-dataset/test.txt
-    
+
   create_config:
-    cmd: python scripts/create_config.py custom-dataset/ yolov7/data/custom.yaml
+    cmd: python scripts/cli.py conf --input custom-dataset --output yolov7/data/custom.yaml
     deps:
-      - scripts/create_config.py
-    outs: 
+      - scripts/cli.py
+      - custom-dataset/train.txt
+    outs:
       - yolov7/data/custom.yaml
 
   train:
@@ -47,7 +48,6 @@ stages:
     deps:
       - yolov7/data/hyp.scratch.custom.yaml
       - yolov7x_training.pt
-      - yolov7/data/custom.yaml
       - custom-dataset/train.txt
       - custom-dataset/val.txt
       - yolov7/data/custom.yaml
