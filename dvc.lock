@@ -1,0 +1,91 @@
+schema: '2.0'
+stages:
+  create_list_files:
+    cmd: python scripts/create_list_files.py custom-dataset/
+    deps:
+    - path: custom-dataset/images/test/
+      md5: 30ef360bb17d83a1b7ff29b6b28f4e65.dir
+      size: 166060067
+      nfiles: 261
+    - path: scripts/create_list_files.py
+      md5: 75d359cba50459ff5e5f0e1fb5af7ab2
+      size: 786
+    outs:
+    - path: custom-dataset/test.txt
+      md5: 13bd9c18464172d96558c19dde201f9c
+      size: 20094
+    - path: custom-dataset/train.txt
+      md5: c6fa3a49eff71a442dedcad5d69506e1
+      size: 706016
+    - path: custom-dataset/val.txt
+      md5: d9075351bda27cf109a6b2571744fb28
+      size: 151970
+  create_annotations:
+    cmd: python scripts/create_annotations.py autoriaNumberplateDataset-2022-08-01/
+      custom-dataset/
+    deps:
+    - path: autoriaNumberplateDataset-2022-08-01/
+      md5: 01259450ea51fb9f0ef1b9dde3cb61e4.dir
+      size: 7204614029
+      nfiles: 11310
+    - path: scripts/create_annotations.py
+      md5: 6a292ed88bc2f6c1ad511d01a671dd04
+      size: 3134
+    outs:
+    - path: custom-dataset/images/train/
+      md5: 3f3a0cc7ba3748b1c1f9db996fef678e.dir
+      size: 5777750696
+      nfiles: 9044
+    - path: custom-dataset/images/val/
+      md5: 3c5da70248ea6632de7a3beb690a91b2.dir
+      size: 1419845132
+      nfiles: 2261
+    - path: custom-dataset/labels/train/
+      md5: c4af40866ae648a4fc84eab4bee81248.dir
+      size: 364040
+      nfiles: 9044
+    - path: custom-dataset/labels/val/
+      md5: cf1f008bc67ae91bc2b69b0d3067aadf.dir
+      size: 90934
+      nfiles: 2261
+  create_test_dataset:
+    cmd: python scripts/create_test_dataset.py custom-dataset/
+    deps:
+    - path: custom-dataset/images/train/
+      md5: 3f3a0cc7ba3748b1c1f9db996fef678e.dir
+      size: 5777750696
+      nfiles: 9044
+    - path: custom-dataset/images/val/
+      md5: f0fa74a5b1bdf0d3faf04df974ad4881.dir
+      size: 1253785065
+      nfiles: 2000
+    - path: custom-dataset/labels/train/
+      md5: c4af40866ae648a4fc84eab4bee81248.dir
+      size: 364040
+      nfiles: 9044
+    - path: custom-dataset/labels/val/
+      md5: 9cff72f19d5575b2d76708296fa92e98.dir
+      size: 80636
+      nfiles: 2000
+    - path: scripts/create_test_dataset.py
+      md5: 9ca655ab6f4d23a680d0099fc019e4a8
+      size: 1115
+    outs:
+    - path: custom-dataset/images/test/
+      md5: 30ef360bb17d83a1b7ff29b6b28f4e65.dir
+      size: 166060067
+      nfiles: 261
+    - path: custom-dataset/labels/test/
+      md5: 5940b3a2de2af2e1b5277604197e957e.dir
+      size: 10298
+      nfiles: 261
+  create_config:
+    cmd: python scripts/create_config.py custom-dataset/ yolov7/data/custom.yaml
+    deps:
+    - path: scripts/create_config.py
+      md5: f3c7767d24649542b5fb237788d0e5a3
+      size: 809
+    outs:
+    - path: yolov7/data/custom.yaml
+      md5: e261cfa2d26313b8413e4cac89a94c09
+      size: 130
