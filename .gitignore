@@ -1,4 +1,7 @@
 autoriaNumberplateDataset-2022-08-01/
-.dvc
 custom-dataset/
 venv/
+Untitled*.ipynb
+.ipynb_checkpoints/
+*.pt
+log*
