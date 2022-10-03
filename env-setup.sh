@@ -49,7 +49,8 @@ echo -e "${PURPLE}[INFO] ${NC}Yolo is loaded 🚀"
 echo -e "${PURPLE}[INFO] ${NC}Installing YOLO system dependencies ..."
 
 # Install YOLO system dependencies
-apt install ffmpeg libsm6 libxext6 libgl1 -y >>$LOG_FILE 2>&1
+# shellcheck disable=SC2024
+sudo apt install ffmpeg libsm6 libxext6 libgl1 -y >>$LOG_FILE 2>&1
 
 echo -e "${PURPLE}[INFO] ${NC}Applying patches ..."
 
