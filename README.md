@@ -1,12 +1,39 @@
 # CarNumberDetection
 
-This project is for experiments with yolo for detecting car numbers. 
-If you want try it 
-* clone this repo and submodule for yolo, which you want to use.
-* download dataset *autoriaNumberplateDataset-2022-08-01* from *nomeroff*
-* change configs (for **yolov7** *cfg\training\yolo7x.yaml*)
-* download weights (for **yolov7** *yolov7x_training.pt*)
-* run
+This project is experiment with yolo dists for detecting car numbers.
+
+### Requirements
+
+- Python >= 3.8
+- RAM >= 16GB
+- GPU >= 8GB
+- CUDA >= 11.0
+
+## Quick start
+
+### Environment setup
+
+Make executable file for environment setup:
+
+```bash
+chmod +x env_setup.sh
 ```
+
+Run environment setup:
+
+```bash
+./env_setup.sh
+```
+
+### Usage with DVC
+
+Run the following command to start the project:
+
+```bash
 dvc repro
 ```
+
+## License
+
+BiFolio is licensed under the MIT License. See [LICENSE](LICENSE) for the full license text.
+
