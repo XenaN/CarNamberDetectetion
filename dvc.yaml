@@ -47,9 +47,19 @@ stages:
        python train.py --workers 8 --device 0 --batch-size 6 --data data/custom.yaml --img 640 640 --cfg cfg/training/yolov7.yaml --weights '../yolov7_training.pt' --name yolov7-custom --hyp data/hyp.scratch.custom.yaml --epochs 38
     deps:
       - yolov7/data/hyp.scratch.custom.yaml
-      - yolov7x_training.pt
+      - yolov7_training.pt
       - custom-dataset/train.txt
       - custom-dataset/val.txt
       - yolov7/data/custom.yaml
     outs:
       - yolov7/runs/train/
+     
+  test:
+    cmd: >-
+       cd yolov7 &&
+       python test.py --device 0 --batch-size 6 --data data/custom.yaml --img 640 --weights best.pt --name yolov7-custom --conf 0.001 --iou 0.65
+    deps:
+      - yolov7/runs/train/
+      - yolov7/best.pt
+    outs:
+      - yolov7/runs/test/
