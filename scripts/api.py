@@ -183,7 +183,7 @@ def create_test_dataset(input_path: PathLike):
         filename = name.name
 
         shutil.move(
-            input_path / 'images' / 'val' / filename,
+            input_path / "images" / "val" / filename,
             img_dir / filename,
         )
 
@@ -192,6 +192,6 @@ def create_test_dataset(input_path: PathLike):
         )
 
         shutil.move(
-            input_path / 'labels' / 'val' / annotation_name,
+            input_path / "labels" / "val" / annotation_name,
             ann_dir / annotation_name,
         )
