@@ -27,7 +27,7 @@ YOLO_VER="yolov7"
 
 VENV_DIR="${SCRIPT_PATH}/.venv"
 
-DATASET_NAME=$(basename $DATASET_URL)
+DATASET_NAME="autoriaNumberplateDataset-2022-08-01"
 WEIGHTS_NAME=$(basename $WEIGHTS_URL)
 
 # Check if the script is being run from the correct directory
@@ -92,7 +92,7 @@ fi
 
 echo -e "${PURPLE}[INFO] ${NC}All dependencies was installed 🚀"
 
-if [ -f "${DATASET_NAME}.zip" ] && ! [ -d "${DATASET_NAME}" ]; then
+if ! [ -f "${DATASET_NAME}.zip" ] && ! [ -d "${DATASET_NAME}" ]; then
 
   echo -e "${PURPLE}[INFO] ${NC}Dataset isn't downloaded ..."
 
@@ -105,6 +105,8 @@ if [ -f "${DATASET_NAME}.zip" ] && ! [ -d "${DATASET_NAME}" ]; then
   wget $DATASET_URL
 fi
 
+ls -ahl
+
 echo -e "${PURPLE}[INFO] ${NC}Dataset zip is loaded!"
 
 if ! [ -d "${DATASET_NAME}" ]; then
@@ -116,12 +118,14 @@ if ! [ -d "${DATASET_NAME}" ]; then
   fi
 
   echo -e "${PURPLE}[INFO] ${NC}Unzipping archive ..."
+
+  unzip "${DATASET_NAME}.zip" >>$LOG_FILE 2>&1
 fi
 
 echo -e "${PURPLE}[INFO] ${NC}Archive is unzipped!"
 
 echo -e "${PURPLE}[INFO] ${NC}Removing zip file ..."
-rm -f "$DATASET_NAME"
+rm -f "${DATASET_NAME}.zip"
 
 if ! [ -f "$WEIGHTS_NAME" ]; then
 
