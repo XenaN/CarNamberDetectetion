@@ -8,7 +8,7 @@ import imagesize
 from tqdm import tqdm
 import yaml
 
-from utils.types import PathLike
+from misc.types import PathLike
 
 
 def calculate_coco_type_box(
@@ -195,3 +195,31 @@ def create_test_dataset(input_path: PathLike):
             str(input_path / "labels" / "val" / annotation_name),
             ann_dir / annotation_name,
         )
+
+
+def create_config_yolov5(input_path: PathLike, output_path: PathLike):
+    """
+    Create yolo config
+
+    Args:
+        input_path: path with input data
+        output_path: path to output data
+    """
+
+    input_path = Path(input_path).resolve()
+    output_path = Path(output_path).resolve()
+
+    train = "train.txt"
+    val = "val.txt"
+    test = "test.txt"
+
+    custom_config = {
+        "path": f"{input_path!s}",
+        "train": f"{train!s}",
+        "val": f"{val!s}",
+        "test": f"{test!s}",
+        "names": {0: "number"},
+    }
+
+    with open(output_path, "w") as file:
+        yaml.dump(custom_config, file)

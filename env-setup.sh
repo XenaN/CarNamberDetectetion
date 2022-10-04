@@ -19,16 +19,20 @@ SCRIPT_PATH="$(
 # URLs for th YOLOv7 resources
 DATASET_URL="https://nomeroff.net.ua/datasets/autoriaNumberplateDataset-2022-08-01.zip"
 WEIGHTS_URL="https://github.com/WongKinYiu/yolov7/releases/download/v0.1/yolov7_training.pt"
+WEIGHTSV5_URL="https://github.com/ultralytics/yolov5/releases/download/v6.2/yolov5s.pt"
 
 LOG_FILE="log.txt"
 
 YOLO_PATH="${SCRIPT_PATH}/yolov7"
+YOLOV5_PATH="${SCRIPT_PATH}/yolov5"
 YOLO_VER="yolov7"
+YOLOV5_VER="yolov5x"
 
 VENV_DIR="${SCRIPT_PATH}/.venv"
 
 DATASET_NAME="autoriaNumberplateDataset-2022-08-01"
 WEIGHTS_NAME=$(basename $WEIGHTS_URL)
+WEIGHTSV5_NAME=$(basename $WEIGHTS_URL)
 
 # Check if the script is being run from the correct directory
 echo -e "${PURPLE}[INFO] ${NC}Jumping to ${SCRIPT_PATH} ..."
@@ -38,25 +42,49 @@ echo -e "${PURPLE}[INFO] ${NC}Starting environment setup ..."
 
 if [ -z "$(ls -A "$YOLO_PATH")" ]; then
   # Clone the YOLOv7 repo as a submodule
-  echo -e "${PURPLE}[INFO] ${NC}Yolo isn't loaded, cloning ..."
+  echo -e "${PURPLE}[INFO] ${NC}YoloV7 isn't loaded, cloning ..."
   cd "${YOLO_PATH}" || exit
+  git submodule init >>$LOG_FILE 2>&1
+  git submodule update >>$LOG_FILE 2>&1
+fi
+
+cd "$SCRIPT_PATH" || exit
+
+if [ -z "$(ls -A "$YOLOV5_PATH")" ]; then
+  # Clone the YOLOv7 repo as a submodule
+  echo -e "${PURPLE}[INFO] ${NC}YoloV5 isn't loaded, cloning ..."
+  cd "${YOLOV5_PATH}" || exit
   git submodule init >>$LOG_FILE 2>&1
   git submodule update >>$LOG_FILE 2>&1
 fi
 
 echo -e "${PURPLE}[INFO] ${NC}Yolo is loaded 🚀"
 
-echo -e "${PURPLE}[INFO] ${NC}Installing YOLO system dependencies ..."
-
 # Install YOLO system dependencies
+echo -e "${PURPLE}[INFO] ${NC}Installing YOLO system dependencies ..."
 # shellcheck disable=SC2024
 sudo apt install ffmpeg libsm6 libxext6 libgl1 -y >>$LOG_FILE 2>&1
+
+# Install Tesseract system dependencies
+echo -e "${PURPLE}[INFO] ${NC}Installing Tesseract system dependencies ..."
+# shellcheck disable=SC2024
+sudo apt install tesseract-ocr -y >>$LOG_FILE 2>&1
+
 
 echo -e "${PURPLE}[INFO] ${NC}Applying patches ..."
 
 # Change classes count in YOLOv7 config
 cd "${YOLO_PATH}/cfg/training/" || exit
+echo -e "${PURPLE}[INFO] ${NC}Patching YOLOv7 ..."
 sed -e 's/nc: 80/nc: 1/' "${YOLO_VER}.yaml" >"${YOLO_VER}.yaml.tmp" && mv "${YOLO_VER}.yaml.tmp" "${YOLO_VER}.yaml"
+cd "$SCRIPT_PATH" || exit
+
+if [ -d "${SCRIPT_PATH}/yolov5" ]; then
+  echo -e "${PURPLE}[INFO] ${NC}Patching YOLOv5 ..."
+  cd "${YOLO_PATH}/cfg/models" || exit
+  sed -e 's/nc: 80/nc: 1/' "${YOLOV5_VER}.yaml" >"${YOLOV5_VER}.yaml.tmp" && mv "${YOLOV5_VER}.yaml.tmp" "${YOLOV5_VER}.yaml"
+fi
+
 echo -e "${PURPLE}[INFO] ${NC}Applying completed!"
 cd "$SCRIPT_PATH" || exit
 
@@ -129,9 +157,16 @@ rm -f "${DATASET_NAME}.zip"
 
 if ! [ -f "$WEIGHTS_NAME" ]; then
 
-  echo -e "${PURPLE}[INFO] ${NC}Weights isn't downloaded ..."
+  echo -e "${PURPLE}[INFO] ${NC}Weights 7 isn't downloaded ..."
 
   wget $WEIGHTS_URL
+fi
+
+if ! [ -f "$WEIGHTSV5_NAME" ]; then
+
+  echo -e "${PURPLE}[INFO] ${NC}Weights 5 isn't downloaded ..."
+
+  wget $WEIGHTSV5_URL
 fi
 
 echo -e "${PURPLE}[INFO] ${NC}Weights '${WEIGHTS_NAME}' is loaded!"
