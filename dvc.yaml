@@ -65,7 +65,7 @@ stages:
   train:
     cmd: >-
        cd yolov5 &&
-       python train.py --batch-size 6 --data data/custom.yaml --img 640 --cfg models/yolov5n.yaml --weights '../yolov5n.pt' --name yolov5-custom  --epochs 38
+       python train.py --batch-size 6 --data data/custom.yaml --img 640 --cfg models/yolov5n.yaml --weights '../yolov5n.pt' #--name yolov5-custom  --epochs 38
     deps:
       - yolov5/yolov5n.pt
       - custom-dataset/train.txt
@@ -83,3 +83,9 @@ stages:
       - yolov7/best.pt
     outs:
       - yolov7/runs/test/
+
+  recognize:
+    cmd: python scripts/cli.py rec --input images/4.png --output images
+    deps:
+      - yolov7/runs/test/
+      - scripts/cli.py

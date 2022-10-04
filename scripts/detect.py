@@ -8,7 +8,7 @@ import imagesize
 from tqdm import tqdm
 import yaml
 
-from utils.types import PathLike
+from misc.types import PathLike
 
 
 def calculate_coco_type_box(
