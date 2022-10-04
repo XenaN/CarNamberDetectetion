@@ -49,30 +49,30 @@ stages:
     outs:
       - yolov5/data/custom.yaml
 
-#  train:
-#    cmd: >-
-#       cd yolov7 &&
-#       python train.py --workers 8 --device 0 --batch-size 6 --data data/custom.yaml --img 640 640 --cfg cfg/training/yolov7.yaml --weights '../yolov7_training.pt' --name yolov7-custom --hyp data/hyp.scratch.custom.yaml --epochs 38
-#    deps:
-#      - yolov7/data/hyp.scratch.custom.yaml
-#      - yolov7_training.pt
-#      - custom-dataset/train.txt
-#      - custom-dataset/val.txt
-#      - yolov7/data/custom.yaml
-#    outs:
-#      - yolov7/runs/train/
-      
   train:
     cmd: >-
-       cd yolov5 &&
-       python train.py --batch-size 6 --data data/custom.yaml --img 640 --cfg models/yolov5n.yaml --weights '../yolov5n.pt' #--name yolov5-custom  --epochs 5
+       cd yolov7 &&
+       python train.py --workers 8 --device 0 --batch-size 6 --data data/custom.yaml --img 640 640 --cfg cfg/training/yolov7.yaml --weights '../yolov7_training.pt' --name yolov7-custom --hyp data/hyp.scratch.custom.yaml --epochs 38
     deps:
-      - yolov5/yolov5n.pt
+      - yolov7/data/hyp.scratch.custom.yaml
+      - yolov7_training.pt
       - custom-dataset/train.txt
       - custom-dataset/val.txt
-      - yolov5/data/custom.yaml
+      - yolov7/data/custom.yaml
     outs:
-      - yolov5/runs/train/
+      - yolov7/runs/train/
+      
+#  train:
+#    cmd: >-
+#       cd yolov5 &&
+#       python train.py --batch-size 6 --data data/custom.yaml --img 640 --cfg models/yolov5n.yaml --weights '../yolov5n.pt' #--name yolov5-custom  --epochs 5
+#    deps:
+#      - yolov5/yolov5n.pt
+#      - custom-dataset/train.txt
+#      - custom-dataset/val.txt
+#      - yolov5/data/custom.yaml
+#    outs:
+#      - yolov5/runs/train/
      
   test:
     cmd: >-
