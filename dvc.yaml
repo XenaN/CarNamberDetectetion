@@ -1,0 +1,91 @@
+stages:
+
+  create_annotations:
+    cmd: python scripts/cli.py ann --input autoriaNumberplateDataset-2022-08-01 --output custom-dataset
+    deps:
+      - scripts/cli.py
+      - autoriaNumberplateDataset-2022-08-01/
+    outs:
+      - custom-dataset/images/train/
+      - custom-dataset/images/val/
+      - custom-dataset/labels/train/
+      - custom-dataset/labels/val/
+
+  create_test_dataset:
+    cmd: python scripts/cli.py dataset --input custom-dataset
+    deps:
+      - scripts/cli.py
+      - custom-dataset/images/train/
+      - custom-dataset/images/val/
+      - custom-dataset/labels/train/
+      - custom-dataset/labels/val/
+    outs:
+      - custom-dataset/images/test/
+      - custom-dataset/labels/test/
+
+  create_list_files:
+    cmd: python scripts/cli.py lists --input custom-dataset
+    deps:
+      - scripts/cli.py
+      - custom-dataset/images/test/
+    outs:
+      - custom-dataset/train.txt
+      - custom-dataset/val.txt
+      - custom-dataset/test.txt
+
+  create_config:
+    cmd: python scripts/cli.py conf --input custom-dataset --output yolov7/data/custom.yaml
+    deps:
+      - scripts/cli.py
+      - custom-dataset/train.txt
+    outs:
+      - yolov7/data/custom.yaml
+
+  create_config_yolov5:
+    cmd: python scripts/cli.py conf5 --input custom-dataset --output yolov5/data/custom.yaml
+    deps:
+      - scripts/cli.py
+      - custom-dataset/train.txt
+    outs:
+      - yolov5/data/custom.yaml
+
+  train:
+    cmd: >-
+       cd yolov7 &&
+       python train.py --workers 8 --device 0 --batch-size 6 --data data/custom.yaml --img 640 640 --cfg cfg/training/yolov7.yaml --weights '../yolov7_training.pt' --name yolov7-custom --hyp data/hyp.scratch.custom.yaml --epochs 38
+    deps:
+      - yolov7/data/hyp.scratch.custom.yaml
+      - yolov7_training.pt
+      - custom-dataset/train.txt
+      - custom-dataset/val.txt
+      - yolov7/data/custom.yaml
+    outs:
+      - yolov7/runs/train/
+      
+#  train:
+#    cmd: >-
+#       cd yolov5 &&
+#       python train.py --batch-size 6 --data data/custom.yaml --img 640 --cfg models/yolov5n.yaml --weights '../yolov5n.pt' #--name yolov5-custom  --epochs 5
+#    deps:
+#      - yolov5/yolov5n.pt
+#      - custom-dataset/train.txt
+#      - custom-dataset/val.txt
+#      - yolov5/data/custom.yaml
+#    outs:
+#      - yolov5/runs/train/
+     
+  test:
+    cmd: >-
+       cd yolov7 &&
+       python test.py --device 0 --batch-size 6 --data data/custom.yaml --img 640 --weights best.pt --name yolov7-custom --conf 0.001 --iou 0.65
+    deps:
+      - yolov7/runs/train/
+      - yolov7/best.pt
+    outs:
+      - yolov7/runs/test/
+
+  recognize:
+    cmd: python scripts/cli.py rec --input images/4.png --output images
+    deps:
+      - yolov7/runs/test/
+      - scripts/cli.py
