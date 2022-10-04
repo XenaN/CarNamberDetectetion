@@ -5,7 +5,7 @@ from detect import create_config
 from detect import create_list_files
 from detect import create_test_dataset
 from detect import create_config_yolov5
-from reсognize import reсognize_letters
+from recognize import reсognize_letters
 
 
 @click.group()

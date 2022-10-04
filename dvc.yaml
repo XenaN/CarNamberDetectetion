@@ -65,7 +65,7 @@ stages:
   train:
     cmd: >-
        cd yolov5 &&
-       python train.py --batch-size 6 --data data/custom.yaml --img 640 --cfg models/yolov5n.yaml --weights '../yolov5n.pt' #--name yolov5-custom  --epochs 38
+       python train.py --batch-size 6 --data data/custom.yaml --img 640 --cfg models/yolov5n.yaml --weights '../yolov5n.pt' #--name yolov5-custom  --epochs 5
     deps:
       - yolov5/yolov5n.pt
       - custom-dataset/train.txt
