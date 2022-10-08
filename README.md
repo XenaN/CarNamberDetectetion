@@ -81,6 +81,11 @@ Common params were batch size 4, image size 640
 |  Yolov7n   |  40 epochs  | 0.978 | 0.943 | 0.977 |
 |  Yolov7n   |  40 epochs; lr=0.001  | 0.988 | 0.965 | 0.989 |
 
+# Speed
+
+Yolov7 - 0.23 s
+
+Yolov5 - 0.17 s
 
 ## License
 
