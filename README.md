@@ -82,6 +82,11 @@ Common params were batch size 4, image size 640
 |  Yolov7n   |  40 epochs; lr=0.001  | 0.988 | 0.965 | 0.989 |
 
 # Speed
+For Intel Core i7-9750H 2.60GHz 
+
+GPU - NVIDIA GeForce RTX 2060
+
+(WSL)
 
 Yolov7 - 0.23 s
 
