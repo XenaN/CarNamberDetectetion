@@ -41,11 +41,10 @@ Run the following command to start the project:
 dvc repro
 ```
 
-PS: if you want to pass train stage, load [weights](https://drive.google.com/file/d/1B1XhgSm56yyJch8oecdDtbb4qdJa496g/view?usp=sharing) and put it to yolov7 folder (check that yolov7 is loaded as submodule)
+PS: if you want to pass train stage, load [weights](https://drive.google.com/file/d/1B1XhgSm56yyJch8oecdDtbb4qdJa496g/view?usp=sharing) and put it to yolov7 folder (check that yolov7 is loaded as submodule). Comment *train* stage in *dvc.yaml* and run 
 
 ```bash
-dvc repro test --single-item
-dvc repro recognize --single-item
+dvc repro
 ```
 
 ## DVC Dag
