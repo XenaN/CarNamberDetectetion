@@ -1,6 +1,7 @@
 # CarNumberDetection
 
-This project is experiment with yolo for detecting car numbers on dataset *nomeroff*, which is the most complete for numbers from several coutries.
+This project is experiment with yolo for detecting car numbers on dataset *nomeroff*, which is the most complete for numbers from several coutries. 
+Dataset you can load [here](https://nomeroff.net.ua/datasets/). Choose *autoriaNumberplateDataset-2022-08-01* 
 
 ### Requirements
 
@@ -38,6 +39,13 @@ Run the following command to start the project:
 
 ```bash
 dvc repro
+```
+
+PS: if you want to pass train stage, load [weights](https://drive.google.com/file/d/1B1XhgSm56yyJch8oecdDtbb4qdJa496g/view?usp=sharing) and put it to yolov7 folder (check that yolov7 is loaded as submodule)
+
+```bash
+dvc repro test --single-item
+dvc repro recognize --single-item
 ```
 
 ## DVC Dag
